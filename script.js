@@ -15,6 +15,9 @@ let color = colorEl.value;
 let x;
 let y;
 
+// Prevent scrolling on mobile during touch events
+document.body.style.overflow = 'hidden'; // Disable scrolling on the body while drawing
+
 // Mouse events
 canvas.addEventListener('mousedown', (e) => {
     isDrawing = true;
@@ -43,7 +46,7 @@ canvas.addEventListener('mousemove', (e) => {
 
 // Touch events
 canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevent scrolling
+    e.preventDefault(); // Prevent scrolling on touchstart
     isDrawing = true;
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
