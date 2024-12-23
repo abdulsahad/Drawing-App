@@ -1,118 +1,95 @@
-// Updated script.js for mobile compatibility
-const canvas = document.getElementById('canvas');
-const increaseBtn = document.getElementById('increase');
-const decreaseBtn = document.getElementById('decrease');
-const sizeEL = document.getElementById('size');
-const colorEl = document.getElementById('color');
-const clearEl = document.getElementById('clear');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-const ctx = canvas.getContext('2d');
-
-let size = 10;
-let isDrawing = false;
-colorEl.value = 'black';
-let color = colorEl.value;
-let x;
-let y;
-
-// Mouse events
-canvas.addEventListener('mousedown', (e) => {
-    isDrawing = true;
-    x = e.offsetX;
-    y = e.offsetY;
-});
-
-document.addEventListener('mouseup', () => {
-    isDrawing = false;
-    x = undefined;
-    y = undefined;
-});
-
-canvas.addEventListener('mousemove', (e) => {
-    if (isDrawing) {
-        const x2 = e.offsetX;
-        const y2 = e.offsetY;
-
-        drawCircle(x2, y2);
-        drawLine(x, y, x2, y2);
-
-        x = x2;
-        y = y2;
-    }
-});
-
-// Touch events
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    isDrawing = true;
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    x = touch.clientX - rect.left;
-    y = touch.clientY - rect.top;
-});
-
-canvas.addEventListener('touchend', () => {
-    isDrawing = false;
-    x = undefined;
-    y = undefined;
-});
-
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    if (isDrawing) {
-        const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        const x2 = touch.clientX - rect.left;
-        const y2 = touch.clientY - rect.top;
-
-        drawCircle(x2, y2);
-        drawLine(x, y, x2, y2);
-
-        x = x2;
-        y = y2;
-    }
-});
-
-function drawCircle(x, y) {
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fillStyle = color;
-    ctx.fill();
+* {
+  box-sizing: border-box;
 }
 
-function drawLine(x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = size * 2;
-    ctx.stroke();
+body {
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  margin: 0;
 }
 
-function updateSizeOnScreen() {
-    sizeEL.innerText = size;
+canvas {
+  border: 10px solid rgb(21, 22, 23);
+  margin-top: 50px;
+  width: 100%;
+  max-width: 1500px; /* Default width */
 }
 
-increaseBtn.addEventListener('click', () => {
-    size += 5;
+.toolbox {
+  background-color: rgb(14, 99, 99);
+  border: 1px solid rgb(12, 81, 85);
+  display: flex;
+  width: 100%;
+  max-width: 1520px; /* Default width */
+  padding: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-    if (size > 50) {
-        size = 50;
-    }
+.toolbox > * {
+  background-color: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  height: 50px;
+  width: 50px;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
 
-    updateSizeOnScreen();
-});
+.toolbox > *:last-child {
+  margin-left: auto;
+}
 
-decreaseBtn.addEventListener('click', () => {
-    size -= 5;
+#clear {
+  width: 150px;
+}
 
-    if (size < 5) {
-        size = 5;
-    }
+#increase, #decrease {
+  border-radius: 50px;
+}
 
-    updateSizeOnScreen();
-});
+#size {
+  width: 100px;
+}
 
-colorEl.addEventListener('change', (e) => color = e.target.value);
+#color {
+  margin-left: 20px;
+}
 
-clearEl.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+  canvas {
+    width: 90%; /* Reduce canvas width */
+    max-width: 1000px; /* Set max width for mobile */
+  }
+
+  .toolbox {
+    width: 100%;
+    max-width: 100%; /* Adjust toolbox width */
+  }
+
+  .toolbox > * {
+    font-size: 1.5rem; /* Reduce font size for smaller screens */
+    width: 40px; /* Smaller button sizes */
+    height: 40px; /* Smaller button sizes */
+  }
+
+  #clear {
+    width: 120px; /* Adjust clear button width */
+  }
+
+  #size {
+    width: 80px;
+  }
+}
